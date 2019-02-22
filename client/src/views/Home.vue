@@ -7,9 +7,6 @@
     <div v-if="showDoTestComponent">
       <DoTestComponent></DoTestComponent> 
     </div>
-    <div v-if="showDoTestComponent">
-      <DoTestComponent></DoTestComponent> 
-    </div>
   </div>
 </template>
 

@@ -100,6 +100,7 @@
           questionImage: this.questionImage,
           answerText: this.answerText,
           answerImage: this.answerImage,
+          nextTestDay: 0
         }
         this.saveCard(payload);
       },

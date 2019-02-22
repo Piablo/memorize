@@ -19,7 +19,10 @@ module.exports = (sequelize, DataTypes) =>
         },  
         dateAdded: {
             type: DataTypes.STRING
-        },       
+        },    
+        nextTestDay: {
+            type: DataTypes.INTEGER
+        },    
     },{
         timestamps: false,
     })

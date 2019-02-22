@@ -52,5 +52,6 @@
   .card-styles{
     height: 45px;
     background-color: gray;
+    margin-bottom: 5px;
   }
 </style>
