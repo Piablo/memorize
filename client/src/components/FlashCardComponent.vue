@@ -9,22 +9,43 @@
           </v-btn>
         </div>
         <div v-if="!showStartButton">
-          <div v-if="showQuestionText">{{currentQuestionText}}
 
-          </div>
-          <div v-if="!showQuestionText">
-            <v-layout row wrap>
-              <v-flex xs6>
+          <v-layout row wrap>
+            <v-flex xs6>
+              <div v-if="showQuestionText">{{currentQuestionText}}
+
+              </div>
+              <div v-if="!showQuestionText">
                 <v-card dark color="primary">
                   <v-card-text>
                     <ImageCard :props="questionCardImageProps"></ImageCard>
                   </v-card-text>
                 </v-card>
-              </v-flex>
-            </v-layout>
-            
-            <!--<img :src="currentQuestionImage" alt="Girl in a jacket" height="42" width="42">-->
-          </div>
+                
+                <!--<img :src="currentQuestionImage" alt="Girl in a jacket" height="42" width="42">-->
+              </div>
+            </v-flex>
+
+            <v-flex xs6>
+              <div v-if="showAnswerText">{{currentAnswerText}}
+                <TextInputComponent></TextInputComponent>
+              </div>
+              <div v-if="!showAnswerText">
+                <v-card dark color="primary">
+                  <v-card-text>Answer Image
+                    <!--<ImageCard :props="questionCardImageProps"></ImageCard>-->
+                  </v-card-text>
+                </v-card>
+                
+                <!--<img :src="currentQuestionImage" alt="Girl in a jacket" height="42" width="42">-->
+              </div>
+            </v-flex>
+          </v-layout>
+
+
+
+
+          
           <div><v-btn @click="tempFunction">Next</v-btn></div>
         </div>
       </div>
@@ -39,6 +60,7 @@
 
   //Components
   import ImageCard from '@/components/ImageCard';
+  import TextInputComponent from '@/components/TextInputComponent';
 
   //Services
 
@@ -48,7 +70,8 @@
     ], 
 
     components: {
-      ImageCard
+      ImageCard,
+      TextInputComponent
     },
 
     data() {
@@ -56,14 +79,21 @@
         showStartButton: true,
         shuffledCards: [],
         currentCardIndex: 0,
+
         showQuestionText: false,
+        showAnswerText: false,
+
         currentQuestionText: "",
+        currentAnswerText: "",
+
         currentQuestionImage: "",
+        cuurentAnswerImage: "",
+
         testingImage: null,
 
         questionCardImageProps: {
           name: "QuestionCardImage",
-          image: null
+          image: null,
         }
       }
     },
@@ -83,6 +113,7 @@
     methods:{
       initilizeData(){
         this.shuffledCards = this.shuffle(this.CardsToTest);
+        console.log("Show the shuffled cards")
         console.log(this.shuffledCards)
       },
 
@@ -105,16 +136,24 @@
 
       displayCard(card){
         
+        //Set the question card
         if(card.questionImage === null){
           this.currentQuestionText = card.questionText;
           this.showQuestionText = true;
         }else{
           var B64String = new Buffer(card.questionImage).toString('ascii');
-
-          
           this.dataURLtoFile(B64String)
-          
           this.showQuestionText = false;
+        }
+
+        //Set the answer card
+        if(card.answerImage === null){
+          this.currentAnswerText = card.answerText;
+          this.showAnswerText = true;
+        }else{
+          //var B64String = new Buffer(card.answerImage).toString('ascii');
+          //this.dataURLtoFile(B64String)
+          this.showAnswerText = false;
         }
       },
 
