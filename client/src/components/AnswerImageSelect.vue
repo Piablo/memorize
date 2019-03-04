@@ -1,59 +1,61 @@
 <template>
-  <v-layout row wrap>
-      <v-flex xs4>
-        <v-card dark color="primary" @click="imageSelected(0)">
-          <img :src="shuffledCards[0].image" alt="Girl in a jacket" height="100" width="100">
-        </v-card>
-      </v-flex>
+  <div v-if="pageLoaded">
+    <v-layout row wrap>
+        <v-flex xs4>
+          <v-card dark color="primary" @click="imageSelected(data[0].isAnswer)">
+            <img :src="data[0].image.image" alt="Girl in a jacket" height="100" width="100">
+          </v-card>
+        </v-flex>
 
-      <v-flex xs4>
-        <v-card dark color="primary" @click="imageSelected(1)">
-          <img :src="shuffledCards[1].image" alt="Girl in a jacket" height="100" width="100">
-        </v-card>
-      </v-flex>
+        <v-flex xs4>
+          <v-card dark color="primary" @click="imageSelected(data[1].isAnswer)">
+            <img :src="data[1].image.image" alt="Girl in a jacket" height="100" width="100">
+          </v-card>
+        </v-flex>
 
-      <v-flex xs4>
-        <v-card dark color="primary" @click="imageSelected(2)">
-          <img :src="shuffledCards[2].image" alt="Girl in a jacket" height="100" width="100">
-        </v-card>
-      </v-flex>
+        <v-flex xs4>
+          <v-card dark color="primary" @click="imageSelected(data[2].isAnswer)">
+            <img :src="data[2].image.image" alt="Girl in a jacket" height="100" width="100">
+          </v-card>
+        </v-flex>
 
-      <v-flex xs4>
-        <v-card dark color="primary" @click="imageSelected(3)">
-          <img :src="shuffledCards[3].image" alt="Girl in a jacket" height="100" width="100">
-        </v-card>
-      </v-flex>
+        <v-flex xs4>
+          <v-card dark color="primary" @click="imageSelected(data[3].isAnswer)">
+            <img :src="data[3].image.image" alt="Girl in a jacket" height="100" width="100">
+          </v-card>
+        </v-flex>
 
-      <v-flex xs4>
-        <v-card dark color="primary" @click="imageSelected(4)">
-          <img :src="shuffledCards[4].image" alt="Girl in a jacket" height="100" width="100">
-        </v-card>
-      </v-flex>
+        <v-flex xs4>
+          <v-card dark color="primary" @click="imageSelected(data[4].isAnswer)">
+            <img :src="data[4].image.image" alt="Girl in a jacket" height="100" width="100">
+          </v-card>
+        </v-flex>
 
-      <v-flex xs4>
-        <v-card dark color="primary" @click="imageSelected(5)">
-          <img :src="shuffledCards[5].image" alt="Girl in a jacket" height="100" width="100">
-        </v-card>
-      </v-flex>
+        <v-flex xs4>
+          <v-card dark color="primary" @click="imageSelected(data[5].isAnswer)">
+            <img :src="data[5].image.image" alt="Girl in a jacket" height="100" width="100">
+          </v-card>
+        </v-flex>
 
-      <v-flex xs4>
-        <v-card dark color="primary" @click="imageSelected(6)">
-          <img :src="shuffledCards[6].image" alt="Girl in a jacket" height="100" width="100">
-        </v-card>
-      </v-flex>
+        <v-flex xs4>
+          <v-card dark color="primary" @click="imageSelected(data[6].isAnswer)">
+            <img :src="data[6].image.image" alt="Girl in a jacket" height="100" width="100">
+          </v-card>
+        </v-flex>
 
-      <v-flex xs4>
-        <v-card dark color="primary" @click="imageSelected(7)">
-          <img :src="shuffledCards[7].image" alt="Girl in a jacket" height="100" width="100">
-        </v-card>
-      </v-flex>
+        <v-flex xs4>
+          <v-card dark color="primary" @click="imageSelected(data[7].isAnswer)">
+            <img :src="data[7].image.image" alt="Girl in a jacket" height="100" width="100">
+          </v-card>
+        </v-flex>
 
-      <v-flex xs4>
-        <v-card dark color="primary" @click="imageSelected(8)">
-          <img :src="shuffledCards[8].image" alt="Girl in a jacket" height="100" width="100">
-        </v-card>
-      </v-flex>
-  </v-layout>
+        <v-flex xs4>
+          <v-card dark color="primary" @click="imageSelected(data[8].isAnswer)">
+            <img :src="data[8].image.image" alt="Girl in a jacket" height="100" width="100">
+          </v-card>
+        </v-flex>
+    </v-layout>
+  </div>
 </template>
 
 <script>
@@ -61,6 +63,7 @@
   //Components
 
   //Services
+  import { bus } from '@/services/Bus';
   import ShuffleService from '@/services/ShuffleService';
 
   export default {
@@ -74,25 +77,35 @@
 
     data() {
       return {
-        //data: this.props.data,
-        shuffledCards: ShuffleService.ShuffleCards(this.props.data)
+        name: this.props.name,
+        data: [],
+        pageLoaded: false,
+        //shuffledCards: ShuffleService.ShuffleCards(this.props.data)
       }
     },
 
     mounted() {
-      console.log("On componetn mount");
-      console.log(this.shuffledCards);
 
     },
 
     created() {
+      bus.$on(this.name + "FromParent", (data) => {
+        this.data =  data;
+        this.pageLoaded = true;
+      })
 
     },
 
     methods:{
-      imageSelected(selectedImageIndex){
-        console.log(selectedImageIndex);
-        console.log(this.shuffledCards[selectedImageIndex].isAnswer);
+      imageSelected(imageIndex){
+        console.log("My brothers")
+        console.log(imageIndex)
+        //var answer = this.shuffledCards[selectedImageIndex].isAnswer;
+        //this.emitAnswer(answer);
+      },
+
+      emitAnswer(answer){
+        //dbus.$emit(this.name + "FromChild", answer);
       }
 
     }

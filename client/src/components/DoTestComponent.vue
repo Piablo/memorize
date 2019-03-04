@@ -1,7 +1,7 @@
 <template>
   <div>
     <PageHeader :props="PageHeaderProps"></PageHeader>
-    <FlashCardComponent></FlashCardComponent>
+    <FlashCardComponent v-if="showFlashCardComponent"></FlashCardComponent>
   </div>
 </template>
 
@@ -23,7 +23,7 @@
 
     components: {
       PageHeader,
-      FlashCardComponent
+      FlashCardComponent,
     },
 
     data() {
@@ -32,6 +32,8 @@
           name: "DoTestComponentHeader",
           title: "Flash Card Game"
         },
+
+        showFlashCardComponent: false,
 
       }
     },
@@ -54,6 +56,15 @@
         'SET_CARDS_TO_TEST',
       ]),
 
+      indexCards(cards){
+        var listLength = cards.length;
+
+        for(var i = 0; i < listLength; i++){
+          cards[i].index = i;
+        }
+        return cards;
+      },
+
       async getTestableCards(){
         var payload = {
           data: {
@@ -61,7 +72,12 @@
           }
         }
         var cards = (await GetTestableCardsService.index(payload)).data;
+
+        cards = this.indexCards(cards);
+
+
         this.SET_CARDS_TO_TEST(cards);
+        this.showFlashCardComponent = true;
       }
     }
   }
