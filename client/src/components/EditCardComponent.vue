@@ -105,11 +105,13 @@
     },
 
     created() {
-      console.log("On created");
-      console.log(this.name);
       bus.$on(this.name + "FromParent", (command) => {
         if(command === "SendData"){
           this.sendDataToParent();
+        }
+        else if(command === "ResetComponent"){
+          this.userEnteredText = null;
+          this.upliftmentDocData = null;
         }
       })
 

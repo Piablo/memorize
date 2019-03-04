@@ -21,23 +21,15 @@
                     <ImageCard :props="questionCardImageProps"></ImageCard>
                   </v-card-text>
                 </v-card>
-                
-                <!--<img :src="currentQuestionImage" alt="Girl in a jacket" height="42" width="42">-->
               </div>
             </v-flex>
 
             <v-flex xs6>
-              <div v-if="showAnswerText">{{currentAnswerText}}
-                <TextInputComponent></TextInputComponent>
+              <div v-if="showAnswerText" class="text-answer-card-styles">
+                <TextInputComponent :props="answerTextfieldProps"></TextInputComponent>
               </div>
               <div v-if="!showAnswerText">
-                <v-card dark color="primary">
-                  <v-card-text>Answer Image
-                    <!--<ImageCard :props="questionCardImageProps"></ImageCard>-->
-                  </v-card-text>
-                </v-card>
-                
-                <!--<img :src="currentQuestionImage" alt="Girl in a jacket" height="42" width="42">-->
+                <AnswerImageSelect :props="answerImageSelectProps"></AnswerImageSelect>
               </div>
             </v-flex>
           </v-layout>
@@ -61,8 +53,11 @@
   //Components
   import ImageCard from '@/components/ImageCard';
   import TextInputComponent from '@/components/TextInputComponent';
+  import AnswerImageSelect from '@/components/AnswerImageSelect';
 
   //Services
+  import GetImagesService from '@/services/GetImagesService';
+  import ShuffleService from '@/services/ShuffleService';
 
   export default {
     props: [
@@ -71,7 +66,8 @@
 
     components: {
       ImageCard,
-      TextInputComponent
+      TextInputComponent,
+      AnswerImageSelect
     },
 
     data() {
@@ -79,6 +75,11 @@
         showStartButton: true,
         shuffledCards: [],
         currentCardIndex: 0,
+        answerImageDisplayList: [],
+
+        answerImageSelectProps: {
+          data: [],
+        },
 
         showQuestionText: false,
         showAnswerText: false,
@@ -94,7 +95,12 @@
         questionCardImageProps: {
           name: "QuestionCardImage",
           image: null,
-        }
+        },
+
+        answerTextfieldProps: {
+          label: "Your Answer",
+          name: "AnswerTextfield"
+        },
       }
     },
     computed:{
@@ -111,10 +117,20 @@
     },
 
     methods:{
-      initilizeData(){
-        this.shuffledCards = this.shuffle(this.CardsToTest);
-        console.log("Show the shuffled cards")
-        console.log(this.shuffledCards)
+
+      extractAnswerImages(shuffledCards){
+        var listLength = shuffledCards.length;
+        var listOfImages = [];
+        for(var i = 0; i < listLength; i++){
+          var currentImage = shuffledCards[i].answerImage;
+          if(currentImage !== null){
+            var B64String = new Buffer(shuffledCards[i].answerImage).toString('ascii');
+            var decodedImage = this.dataURLtoFile(B64String);
+
+            listOfImages.push(decodedImage);
+          }
+        }
+        return listOfImages;
       },
 
       tempFunction(){
@@ -129,9 +145,41 @@
 
       onStartClick(){
         this.showStartButton = false;
-        this.initilizeData();
-        this.startCountDown();
+        //this.shuffledCards = this.shuffle(this.CardsToTest);
+        this.shuffledCards = ShuffleService.ShuffleCards(this.CardsToTest);
+        var extractedImages = this.extractAnswerImages(this.shuffledCards);
+        this.setImageOptions(extractedImages);
+       
         
+        //this.startCountDown();
+        
+      },
+
+      async setImageOptions(extractedImages){
+        var extractedImagesCount = extractedImages.length;
+        var shuffledListContainsAnswer = false;
+        if(extractedImagesCount < 9){
+          var test = (await GetImagesService.index()).data;
+          console.log("This is still incomplete");
+          debugger;
+        } else{
+          var numberOfImages = 9;
+          var returnList = [];
+          var isAnswer = false;
+          for(var i = 0; i < numberOfImages; i++){
+            var isAnswer = false; 
+            if(this.currentCardIndex === i){
+              isAnswer = true
+            }
+            var imageData = {
+              image: extractedImages[i],
+              isAnswer: isAnswer
+            }
+            returnList.push(imageData);
+          }
+          this.answerImageSelectProps.data = returnList;
+          this.startCountDown();
+        }
       },
 
       displayCard(card){
@@ -142,7 +190,7 @@
           this.showQuestionText = true;
         }else{
           var B64String = new Buffer(card.questionImage).toString('ascii');
-          this.dataURLtoFile(B64String)
+          this.questionCardImageProps.image = this.dataURLtoFile(B64String);
           this.showQuestionText = false;
         }
 
@@ -166,21 +214,16 @@
             containerWidth = image.width;
             containerHeight = image.height;
         }
-        this.questionCardImageProps.image = image.src = B64String;
+        var value = image.src = B64String;
+        return value;
       },
 
       shuffle(array) {
         let counter = array.length;
 
-        // While there are elements in the array
         while (counter > 0) {
-          // Pick a random index
           let index = Math.floor(Math.random() * counter);
-
-          // Decrease counter by 1
           counter--;
-
-          // And swap the last element with it
           let temp = array[counter];
           array[counter] = array[index];
           array[index] = temp;
@@ -209,6 +252,13 @@
   background-color:red;
   width: 105px;
   display: table-cell;
+  vertical-align: middle;
+}
+
+.text-answer-card-styles{
+  background-color: red;
+  padding: 10px;
+  height: 338px;
   vertical-align: middle;
 }
 

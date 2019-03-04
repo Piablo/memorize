@@ -105,9 +105,15 @@
         this.saveCard(payload);
       },
 
+      resetFields(){
+        var command = "ResetComponent";
+        bus.$emit(this.AnswerCardProps.name + "FromParent", command);
+        bus.$emit(this.QuestionCardProps.name + "FromParent", command);
+      },
+
       async saveCard(payload){
         var serverResponse = (await SaveCardService.index(payload)).data;
-        debugger;
+        this.resetFields();
       },
 
       pingChildComponentsForData(){
