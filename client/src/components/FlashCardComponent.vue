@@ -91,14 +91,13 @@
     },
 
     created() {
-      // bus.$on(this.answerImageSelectProps.name + "FromChild", (answer) => {
-      //   console.log(answer);
-      //   if(answer){
-      //     this.nextQuestion();
-      //   }else{
-      //     console.log("nope try again")
-      //   }
-      // })
+      bus.$on(this.answerImageSelectProps.name + "FromChild", (answer) => {
+        if(answer){
+          this.showNextCard();
+        }else{
+          console.log("nope try again")
+        }
+      })
 
     },
 
@@ -147,74 +146,76 @@
         }
         return images;
       },
+
       spliceAnswerFromList(answerCardImages, answerIndex){
-        var currentAnswerImage = [];
+        var currentAnswerImage = null
+        var nonAnswerImages = [];
+        var returnArray = [];
 
         for(var i = 0; i < answerCardImages.length; i++){
           if(answerCardImages[i].index === answerIndex){
             currentAnswerImage = answerCardImages[i];
-            answerCardImages.splice(i,1);
-          
+          }
+          else{
+            nonAnswerImages.push(answerCardImages[i]);
           }
         }
-        return currentAnswerImage;
+        returnArray.push(currentAnswerImage);
+        returnArray.push(nonAnswerImages);
+        
+        return returnArray;
         
       },
 
       showNextCard(){
-
         var showQuestionText = false;
         var showAnswerText = false;
+        var allCardsTested = false;
 
-        console.log(this.shuffledCards[this.currentCardIndex])
-        if(this.shuffledCards[this.currentCardIndex].questionImage === null){
-          console.log("The questionCard is text");
+        if(this.shuffledCards.length === this.currentCardIndex){
+          allCardsTested = true;
+        }
+
+        if(!allCardsTested){
+          if(this.shuffledCards[this.currentCardIndex].questionImage === null){
           showQuestionText = true;
           this.currentQuestionText = this.shuffledCards[this.currentCardIndex].questionText;
-        }else{
-          console.log("The questionCard is an image");
+          }else{
+            console.log("The questionCard is an image");
+          }
+
+          if(this.shuffledCards[this.currentCardIndex].answerImage === null){
+            showAnswerText = true;
+            this.currentQuestionText = this.shuffledCards[this.currentCardIndex].answerText;
+          }else{
+            var answerIndex = this.shuffledCards[this.currentCardIndex].index;
+            var splitImages = this.spliceAnswerFromList(this.answerCardImages, answerIndex);
+            var nineRandomImages = this.getNineRandomImages(splitImages[1], splitImages[0]);
+            bus.$emit(this.answerImageSelectProps.name + "FromParent", nineRandomImages);
+          }
+          this.showQuestionText = showQuestionText;
+          this.showAnswerText = showAnswerText;
+          this.currentCardIndex++;
         }
-
-        if(this.shuffledCards[this.currentCardIndex].answerImage === null){
-          console.log("The answerCard is text");
-          showAnswerText = true;
-          this.currentQuestionText = this.shuffledCards[this.currentCardIndex].answerText;
-        }else{
-          console.log("The answerCard is an image");
-          var answerIndex = this.shuffledCards[this.currentCardIndex].index;
-          console.log(this.answerCardImages);
-
-          var currentAnswerImage = this.spliceAnswerFromList(this.answerCardImages, answerIndex);
-
-          debugger;
+        else{
+          console.log("End reached")
         }
-
-        //var imagesForDisplay = this.getNineRandomImages(this.answerCardImages, this.currentCardIndex);
-        this.showQuestionText = showQuestionText;
-        this.showAnswerText = showAnswerText;
-
-        //bus.$emit(this.answerImageSelectProps.name + "FromParent", imagesForDisplay);
+        
       },
 
-      getNineRandomImages(images, answerIndex){
-        debugger;
-        var listLength = images.length;
-        var isAnswer = null;
-        var nineImageListUnshuffled = [];
+      getNineRandomImages(allImages, answerImage){
 
-        for(var i = 0; i < listLength; i++){
-          isAnswer = false;
-          if(i === answerIndex){
-            isAnswer = true;
-          };
+        var shuffledFullList = ShuffleService.ShuffleCards(allImages);
+        var returnValue = [];
 
-          var value = {
-            image: images[i],
-            isAnswer: isAnswer
-          }
-          nineImageListUnshuffled.push(value);
+        for(var i = 0; i < 8; i++){
+          allImages[i].isAnswer = false;
+          returnValue.push(allImages[i]);
         }
-        return this.shuffleCards(nineImageListUnshuffled);
+
+        answerImage.isAnswer = true;
+        returnValue.push(answerImage);
+        return returnValue = ShuffleService.ShuffleCards(returnValue);
       },
 
       shuffleCards(cards){
