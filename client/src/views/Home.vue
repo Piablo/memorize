@@ -7,6 +7,9 @@
     <div v-if="showDoTestComponent">
       <DoTestComponent></DoTestComponent> 
     </div>
+    <div v-if="showAddVerbatimComponent">
+      <AddVerbatimComponent :props="addVerbatimComponentProps"></AddVerbatimComponent>
+    </div>
   </div>
 </template>
 
@@ -19,6 +22,7 @@
   import HeaderToolbarComponent from '../components/HeaderToolbarComponent';
   import AddCardComponent from '../components/AddCardComponent';
   import DoTestComponent from '../components/DoTestComponent';
+  import AddVerbatimComponent from '../components/AddVerbatimComponent';
 
   //Services
   import { bus } from '@/services/Bus';
@@ -28,6 +32,7 @@
     components: {
       HeaderToolbarComponent,
       AddCardComponent,
+      AddVerbatimComponent,
       DoTestComponent
     },
 
@@ -35,7 +40,12 @@
       return{
         showAddCardComponent: false,
         showDoTestComponent: false,
-        tokenDetails: ""
+        showAddVerbatimComponent: false,
+        tokenDetails: "",
+
+        addVerbatimComponentProps: {
+          name: "AddVerbatimComponent"
+        }
       }
     },
     mounted(){
@@ -49,6 +59,22 @@
 
       bus.$on("DoTestButtonClicked", (payload) => {
         this.setView("doTest");
+      }),
+
+      bus.$on("AddVerbatimButtonClicked", (payload) => {
+        this.setView("addVerbatim");
+      }),
+
+      bus.$on("DoTestButtonClicked", (payload) => {
+        this.setView("doTest");
+      })
+
+      bus.$on("DoTestButtonClicked", (payload) => {
+        this.setView("doTest");
+      })
+
+      bus.$on(this.addVerbatimComponentProps.name + "FromChild", (payload) => {
+        this.setView("destroy");
       })
     },
 
@@ -60,12 +86,21 @@
       setView(selector){
         this.showAddCardComponent = false;
         this.showDoTestComponent = false;
+        this.showAddVerbatimComponent = false;
+
         if(selector === "addCard"){
           this.showAddCardComponent = true;
         }
         else if(selector === "doTest"){
           this.showDoTestComponent = true;
         }
+        else if(selector === "addVerbatim"){
+          this.showAddVerbatimComponent = true;
+        }
+        else{
+          //Do nothing
+        }
+
       },
 
       async isUserLoggedIn(){

@@ -5,6 +5,8 @@
         <v-card>
           <v-btn @click="onDoTestClick">Do test</v-btn>
           <v-btn @click="onAddCardClick">Add cards</v-btn>
+          <v-btn @click="onTestVerbatim">Do verbatim</v-btn>
+          <v-btn @click="onAddVerbatim">Add verbatim</v-btn>
         </v-card>
       </v-flex>
     </v-layout>
@@ -48,6 +50,14 @@
 
       onDoTestClick(){
         bus.$emit("DoTestButtonClicked", true);
+      },
+
+      onAddVerbatim(){
+        bus.$emit("AddVerbatimButtonClicked", true);
+      },
+
+      onTestVerbatim(){
+        bus.$emit("AddVerbatimButtonClicked", true);
       }
     }
   }

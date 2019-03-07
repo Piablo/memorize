@@ -103,9 +103,18 @@ export default {
     })
   },
 
+  beforeDestroy() {
+    bus.$off(this.loginButtonProps.name + "OnClick");
+    bus.$off(this.emailTextFieldInputProps.name + "FromChild");
+    bus.$off(this.passwordComponentProps.name + "FromChild");
+  },
+
   methods: {
     getDataFromChildComponents(){
-      bus.$emit(this.emailTextFieldInputProps.name + "FromParent", "GetData");
+      var payload = {
+        command: "GetData"
+      }
+      bus.$emit(this.emailTextFieldInputProps.name + "FromParent", payload);
       bus.$emit(this.passwordComponentProps.name + "FromParent", "GetData");
     },
 

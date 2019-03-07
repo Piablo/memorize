@@ -25,11 +25,25 @@
       }
     },
     created(){
-      bus.$on(this.name + "FromParent", (selector) => {
-        if(selector === "GetData"){
+      bus.$on(this.name + "FromParent", (payload) => {
+        //This has been changed and errors will be thrown.
+        var command = payload.command;
+        if(command === "GetData"){
           this.sendDataToParent();
         }
+        else if(command === "SetField"){
+          this.userInput = payload.data;
+        }
+        else if(command === "DisableField"){
+          debugger;
+        }
+        
       })
+
+      //bus.$off(this.name + "FromParent")
+    },
+    beforeDestroy() {
+      bus.$off(this.name + "FromParent");
     },
 
     methods: {

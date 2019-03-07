@@ -3,6 +3,7 @@ const ValidateTokenController = require('./controllers/ValidateTokenController')
 const ValidateUsercontroller = require('./controllers/ValidateUsercontroller');
 const GetTestableCardsController = require('./controllers/GetTestableCardsController');
 const GetImagesController = require('./controllers/GetImagesController');
+const SaveSentenceController = require('./controllers/SaveSentenceController');
 
 module.exports = (app) => {
     app.post('/api/save-card',
@@ -20,5 +21,7 @@ module.exports = (app) => {
     app.post('/api/get-images', 
         GetImagesController.model) 
 
-        
+    app.post('/api/save-sentence', 
+        SaveSentenceController.model) 
+    
 }
