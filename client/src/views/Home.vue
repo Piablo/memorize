@@ -10,6 +10,9 @@
     <div v-if="showAddVerbatimComponent">
       <AddVerbatimComponent :props="addVerbatimComponentProps"></AddVerbatimComponent>
     </div>
+    <div v-if="showVerbatimTestComponent">
+      <TestVerbatimComponent></TestVerbatimComponent>
+    </div>
   </div>
 </template>
 
@@ -23,6 +26,7 @@
   import AddCardComponent from '../components/AddCardComponent';
   import DoTestComponent from '../components/DoTestComponent';
   import AddVerbatimComponent from '../components/AddVerbatimComponent';
+  import TestVerbatimComponent from '../components/TestVerbatimComponent';
 
   //Services
   import { bus } from '@/services/Bus';
@@ -33,7 +37,8 @@
       HeaderToolbarComponent,
       AddCardComponent,
       AddVerbatimComponent,
-      DoTestComponent
+      DoTestComponent,
+      TestVerbatimComponent
     },
 
     data() {
@@ -41,6 +46,7 @@
         showAddCardComponent: false,
         showDoTestComponent: false,
         showAddVerbatimComponent: false,
+        showVerbatimTestComponent: false,
         tokenDetails: "",
 
         addVerbatimComponentProps: {
@@ -65,12 +71,8 @@
         this.setView("addVerbatim");
       }),
 
-      bus.$on("DoTestButtonClicked", (payload) => {
-        this.setView("doTest");
-      })
-
-      bus.$on("DoTestButtonClicked", (payload) => {
-        this.setView("doTest");
+      bus.$on("TestVerbatimButtonClicked", (payload) => {
+        this.setView("testVerbatim");
       })
 
       bus.$on(this.addVerbatimComponentProps.name + "FromChild", (payload) => {
@@ -96,6 +98,9 @@
         }
         else if(selector === "addVerbatim"){
           this.showAddVerbatimComponent = true;
+        }
+        else if(selector === "testVerbatim"){
+          this.showVerbatimTestComponent = true;
         }
         else{
           //Do nothing

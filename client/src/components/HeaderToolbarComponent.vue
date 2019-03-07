@@ -57,7 +57,7 @@
       },
 
       onTestVerbatim(){
-        bus.$emit("AddVerbatimButtonClicked", true);
+        bus.$emit("TestVerbatimButtonClicked", true);
       }
     }
   }
