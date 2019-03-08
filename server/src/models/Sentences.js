@@ -7,7 +7,10 @@ module.exports = (sequelize, DataTypes) =>
         },
         sentence: {
             type: DataTypes.TEXT
-        }   
+        },
+        question: {
+            type: DataTypes.TEXT
+        }  
     },{
         timestamps: false,
     })

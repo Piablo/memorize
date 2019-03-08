@@ -89,6 +89,7 @@
         this.showAddCardComponent = false;
         this.showDoTestComponent = false;
         this.showAddVerbatimComponent = false;
+        this.showVerbatimTestComponent = false;
 
         if(selector === "addCard"){
           this.showAddCardComponent = true;

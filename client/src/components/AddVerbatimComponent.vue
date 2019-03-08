@@ -120,7 +120,8 @@
       async saveSentenceToDB(sentence){
         var sentenceAsJSONString = JSON.stringify(sentence);
         var payload = {
-          sentence: sentenceAsJSONString
+          sentence: sentenceAsJSONString,
+          question: ""
         }
 
         var serverResponse = (await SaveSentenceService.index(payload)).data;
