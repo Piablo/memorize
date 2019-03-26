@@ -1,8 +1,9 @@
 <template>
-  <div>
+  <v-flex class="backing-panel" xs6>
+    <div class="backing-panel-header">{{headerText}}</div>
     <v-layout row wrap>
       
-      <v-flex xs6 class="word-list-container">
+      <v-flex xs12 class="word-list-container">
         <div v-for="(item, index) in listOfWords" :key="index">
           <v-flex xs12 class="edit-word-container">
             <div v-if="!listOfWords[index].showEditWord">
@@ -35,9 +36,16 @@
         </v-flex>
         
       </v-flex>
+
+      
+
     </v-layout>
-    <v-btn @click="saveSentence">log stuff</v-btn>
-  </div>
+
+    <v-flex xs12>
+      <v-btn @click="saveSentence" block>save</v-btn>
+    </v-flex>
+    
+  </v-flex>
 </template>
 
 <script> 
@@ -67,6 +75,7 @@
         listOfWords: [],
         editWordIndex: 0,
         name: this.props.name,
+        headerText: "Add a refference",
 
         addVerbatimWordComponentProps: {
           name: "AddVerbatimWordComponent"
@@ -118,9 +127,8 @@
       },
 
       async saveSentenceToDB(sentence){
-        var sentenceAsJSONString = JSON.stringify(sentence);
         var payload = {
-          sentence: sentenceAsJSONString,
+          sentence: sentence,
           question: ""
         }
 
@@ -178,6 +186,15 @@
   font-size: 25px;
 }
 
+.backing-panel{
+  background-color: green;
+}
+
+.backing-panel-header{
+  background-color: pink;
+  font-size: 18px;
+  padding: 5px;
+}
 
 
 </style>

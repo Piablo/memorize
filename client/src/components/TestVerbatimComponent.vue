@@ -63,6 +63,10 @@
         </v-layout>
 
       </v-flex>
+
+      <v-flex xs6 v-if="showVerbatimStatsComponent">
+        <VerbatimTestStats></VerbatimTestStats>
+      </v-flex>
     </v-layout>
   </div>
 </template>
@@ -70,6 +74,7 @@
 <script>
 
   //Components
+  import VerbatimTestStats from '@/components/VerbatimTestStats';
 
   //Services
   import GetSentenceService from '@/services/GetSentenceService';
@@ -80,7 +85,7 @@
     ], 
 
     components: {
-
+      VerbatimTestStats
     },
 
     data() {
@@ -93,7 +98,8 @@
         sessionAnswers: [],
         enabled: [],
         allSentencesToTest: [],
-        question: ""
+        question: "",
+        showVerbatimStatsComponent: false,
       }
     },
 
@@ -109,6 +115,7 @@
       async loadData(){
         this.allSentencesToTest = (await GetSentenceService.index("")).data;
         this.currentTestSentence = this.getSentenceArray(this.allSentencesToTest, this.sentenceIndex);
+        debugger;
       },
 
       checkIfSpace(event){
@@ -145,9 +152,21 @@
           }
         }
         this.sessionAnswers.push(validAnswers)
+        this.showTestStats();
+        //this.loadNextTest();
+      },
+
+      showTestStats(){
+        this.showVerbatimStatsComponent = true;
+      },
+
+      
+
+      loadNextTest(){
         this.userEnteredWords = [];
         this.sentenceIndex++;
         this.currentTestSentence = this.getSentenceArray(this.allSentencesToTest, this.sentenceIndex);
+      
       },
 
       getSentenceArray(serverResponse, index){
