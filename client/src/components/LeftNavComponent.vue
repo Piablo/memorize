@@ -8,10 +8,10 @@
                 </v-flex>
                 <v-flex xs1>
                     <v-flex xs12>
-                        <v-icon @click="insertSlideAt(index)">add_circle</v-icon>
+                        <v-icon @click="insertSlide(index)">add_circle</v-icon>
                     </v-flex>
                     <v-flex xs12>
-                        <v-icon @click="deleteSlideAt(index)">delete</v-icon>
+                        <v-icon @click="deleteSlide(index)">delete</v-icon>
                     </v-flex>
                 </v-flex>
             </v-layout>
@@ -61,9 +61,18 @@ export default {
             this.previouslyActiveSlideIndex = slideIndex;
         },
 
-        addSlide(index){
+        insertSlide(index){
+            
+            
+            this.insertSlideAt(index)
 
-        },
+            if(index <= this.previouslyActiveSlideIndex){
+                this.previouslyActiveSlideIndex ++;
+            }
+
+            console.log("The index of inserted slide:" + index);
+            console.log("The index of active slide: " + this.previouslyActiveSlideIndex);
+        }
     },
 
     computed: mapGetters(['allSlides']),
