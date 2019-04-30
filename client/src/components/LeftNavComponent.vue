@@ -43,7 +43,6 @@ export default {
     data(){
         return {
             previouslyActiveSlideIndex: 0,
-
         }
     },
 
@@ -61,24 +60,29 @@ export default {
             this.previouslyActiveSlideIndex = slideIndex;
         },
 
+        deleteSlide(index){
+            this.deleteSlideAt(index);
+        },
+
         insertSlide(index){
-            
-            
             this.insertSlideAt(index)
 
             if(index <= this.previouslyActiveSlideIndex){
                 this.previouslyActiveSlideIndex ++;
             }
+            
+            this.setActiveSlide(this.previouslyActiveSlideIndex);
 
-            console.log("The index of inserted slide:" + index);
-            console.log("The index of active slide: " + this.previouslyActiveSlideIndex);
-        }
+        },
+
     },
 
     computed: mapGetters(['allSlides']),
 
     created(){
         this.fetchSlides();
+        
+        
         var activeSlideIndex = this.allSlides.length - 1
         this.setActiveSlide(activeSlideIndex);
     }
