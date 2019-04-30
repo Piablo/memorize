@@ -23,7 +23,7 @@ const actions = {
     },
 
     deleteSlideFromStore({ commit }, index){
-        debugger;
+        commit('slideToDeleteIndex', index);
     }
 
     // async addTodo({ commit }, title){
@@ -36,7 +36,9 @@ const actions = {
 
 const mutations = {
     setSlides: (state, slides) => (state.slides = slides),
-    //newTodo: (state, todo) => state.todos.unshift(todo)
+    //newTodo: (state, todo) => state.todos.unshift(todo),
+    slideToDeleteIndex: (state, index) => (state.slides.splice(index, 1))
+
 };
 
 export default {
