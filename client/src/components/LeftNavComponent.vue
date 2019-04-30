@@ -8,10 +8,10 @@
                 </v-flex>
                 <v-flex xs1>
                     <v-flex xs12>
-                        <v-icon @click="addSlide(index)">add_circle</v-icon>
+                        <v-icon @click="insertSlideAt(index)">add_circle</v-icon>
                     </v-flex>
                     <v-flex xs12>
-                        <v-icon @click="deleteSlide(index)">delete</v-icon>
+                        <v-icon @click="deleteSlideAt(index)">delete</v-icon>
                     </v-flex>
                 </v-flex>
             </v-layout>
@@ -48,7 +48,11 @@ export default {
     },
 
     methods: {
-        ...mapActions(['fetchSlides', 'deleteSlideFromStore']),
+        ...mapActions([
+            'fetchSlides', 
+            'deleteSlideAt',
+            'insertSlideAt'
+        ]),
 
         setActiveSlide(slideIndex){
             this.allSlides[this.previouslyActiveSlideIndex].color = "blue";
@@ -60,10 +64,6 @@ export default {
         addSlide(index){
 
         },
-
-        deleteSlide(index){
-            this.deleteSlideFromStore(index);
-        }
     },
 
     computed: mapGetters(['allSlides']),
