@@ -1,25 +1,19 @@
 <template>
   <v-app>
-    <v-toolbar app>
-      <v-toolbar-title>
-        <span>Toolbar text</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-    </v-toolbar>
-
-    <v-content>
+    <div>
+      <!--<AddTodo />-->
       <router-view></router-view>
-    </v-content>
+    </div>
   </v-app>
 </template>
 
 <script>
-//import HelloWorld from './components/HelloWorld'
+import AddTodo from './components/AddTodo'
 
 export default {
   name: 'App',
   components: {
-    //HelloWorld
+    //AddTodo
   },
   data () {
     return {
@@ -28,3 +22,7 @@ export default {
   }
 }
 </script>
+
+<style>
+
+</style>

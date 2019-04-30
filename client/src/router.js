@@ -12,10 +12,10 @@ export default new Router({
     //   component: Home
     // },
     {
-      path: '/login',
-      name: 'login',
+      path: '/',
+      name: 'Dashboard',
       component: function () { 
-        return import('./views/Login.vue')
+        return import('./views/Dashboard.vue')
       }
     }
   ]

@@ -1,6 +1,9 @@
 <template>
     <div>
-        <h3>LeftNavComponent</h3>
+        <v-btn
+            @click="onClick">
+                {{label}}
+        </v-btn>
     </div>
 </template>
 
@@ -10,12 +13,11 @@
 //import { mapGetters, mapActions } from 'vuex';
 
 //Services
-//import { bus }from '@/services/Bus';
+import { bus }from '@/services/Bus';
 
 //Components
 
 export default {
-    name: "LeftNavComponent",
 
     props: [
         'props'
@@ -27,18 +29,25 @@ export default {
 
     data(){
         return {
-            title: ''
+            label: this.props.label,
+            name: this.props.name
         }
     },
 
     methods: {
         //...mapActions(['fetchTodos'])
+
+        onClick(){
+            bus.$emit(this.name + "onClick", true);
+        }
     },
 
     //computed: mapGetters(['allTodos']),
 
     created(){
         //this.fetchTodos();
+        console.log("The name of this component is: ")
+        console.log(this.name);
     }
     
 }

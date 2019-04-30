@@ -13,9 +13,6 @@ module.exports = {
         var token = null;
         var userID = null;
         var dateJoined = null;
-        
-
-        
 
         checkExisting(emailAddress)
         .then(dbResponse => {
