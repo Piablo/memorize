@@ -45,9 +45,6 @@ export default {
     //computed: mapGetters(['allTodos']),
 
     created(){
-        //this.fetchTodos();
-        console.log("The name of this component is: ")
-        console.log(this.name);
     }
     
 }

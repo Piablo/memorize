@@ -51,9 +51,6 @@ export default {
     computed: mapGetters(['currentaddSlideButtonState']),
 
     created(){
-        console.log("This guy");
-        console.log(this.currentaddSlideButtonState)
-        //this.fetchTodos();
     }
     
 }

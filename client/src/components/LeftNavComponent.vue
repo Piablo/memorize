@@ -4,7 +4,9 @@
         <div class="slide-backing-panel" v-bind:style="{ 'background-color': slide.color}" v-for="(slide, index) in allSlides" :key="index">
             <v-layout row wrap>
                 <v-flex xs11>
-                    <div class="slide-content-backing-panel" @click="setActiveSlide(index)">{{slide.name}}</div>
+                    <div class="slide-content-backing-panel" @click="setActiveSlide(index)">
+                        <SlideDisplay :props="index"></SlideDisplay>
+                    </div>
                 </v-flex>
                 <v-flex xs1>
                     <v-flex xs12>
@@ -29,6 +31,7 @@ import { mapGetters, mapActions } from 'vuex';
 //import { bus }from '@/services/Bus';
 
 //Components
+import SlideDisplay from '@/components/SlideDisplay';
 
 export default {
     name: "Template",
@@ -38,6 +41,7 @@ export default {
     ],
 
     components: {
+        SlideDisplay
     },
 
     data(){
@@ -50,12 +54,15 @@ export default {
         ...mapActions([
             'fetchSlides', 
             'deleteSlideAt',
-            'insertSlideAt'
+            'insertSlideAt',
+            'setActiveSlideToStore'
         ]),
 
         setActiveSlide(slideIndex){
             this.allSlides[this.previouslyActiveSlideIndex].color = "blue";
             this.allSlides[slideIndex].color = "red";
+
+            this.setActiveSlideToStore(slideIndex);
 
             this.previouslyActiveSlideIndex = slideIndex;
         },

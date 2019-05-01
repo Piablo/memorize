@@ -6,8 +6,8 @@
         <div class="new-slide-component-body-backing-panel">
             <div class="new-slide-component-content-backing-panel">
                 <v-layout row wrap>
-                    <v-flex xs9>
-                        <CurrentSlide></CurrentSlide>
+                    <v-flex xs9>{{getActiveSlide.name}}
+                        <!--<SlideDisplay></SlideDisplay>-->
                     </v-flex>
                     <v-flex xs3>
                         <div class="new-powershell-template" v-if="showNewPowerShellTemplate">powershelltemplate</div>
@@ -21,14 +21,14 @@
 <script>
 
 //Vuex
-//import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 //Services
 import { bus }from '@/services/Bus';
 
 //Components
 import ButtonComponent from '@/components/ButtonComponent';
-import CurrentSlide from '@/components/CurrentSlide';
+import SlideDisplay from '@/components/SlideDisplay';
 
 export default {
     name: "NewSlideComponent",
@@ -39,7 +39,7 @@ export default {
 
     components: {
         ButtonComponent,
-        CurrentSlide
+        SlideDisplay,
     },
 
     data(){
@@ -55,7 +55,7 @@ export default {
     },
 
     methods: {
-        //...mapActions(['fetchTodos'])
+        //...mapActions(['activeSlide']),
 
         showTemplate(selectedTemplate){
             this.showNewPowerShellTemplate = false;
@@ -67,11 +67,9 @@ export default {
         }
     },
 
-    //computed: mapGetters(['allTodos']),
+    computed: mapGetters(['getActiveSlide']),
 
     created(){
-        //this.fetchTodos();
-
         bus.$on("addPowershellTemplateButtonComponent" + "onClick", (state) => {
             this.showTemplate("PowerShell");
         })
