@@ -62,6 +62,12 @@ export default {
 
         deleteSlide(index){
             this.deleteSlideAt(index);
+
+            if(index <= this.previouslyActiveSlideIndex){
+                this.previouslyActiveSlideIndex --;
+            }
+
+            this.setActiveSlide(this.previouslyActiveSlideIndex);
         },
 
         insertSlide(index){
