@@ -6,7 +6,9 @@
         <div class="new-slide-component-body-backing-panel">
             <div class="new-slide-component-content-backing-panel">
                 <v-layout row wrap>
-                    <v-flex xs9>{{getActiveSlide.name}}
+                    <v-flex xs9>
+                        <div>{{getActiveSlide.name}}</div>
+                        <div>{{getActiveSlide.type}}</div>
                         <!--<SlideDisplay></SlideDisplay>-->
                     </v-flex>
                     <v-flex xs3>
@@ -46,22 +48,31 @@ export default {
         
         return {
             showNewPowerShellTemplate: false,
+            resetting: false,
 
             addPowershellTemplateButtonComponentProps:{
                 name: "addPowershellTemplateButtonComponent",
                 label: "PowerShell"
-            }
+            },
         }
     },
 
     methods: {
         //...mapActions(['activeSlide']),
 
+        ...mapActions(['editSlide']),
+
         showTemplate(selectedTemplate){
             this.showNewPowerShellTemplate = false;
 
             if(selectedTemplate === "PowerShell"){
                 this.showNewPowerShellTemplate = true;
+                var payload = {
+                    index: this.getActiveSlide.index,
+                    type: "PowerShell",
+                    data: "dave"
+                }
+                this.editSlide(payload);
             }
 
         }
@@ -74,7 +85,6 @@ export default {
             this.showTemplate("PowerShell");
         })
     }
-    
 }
 </script>
 

@@ -15,10 +15,10 @@ const actions = {
         //const response  = await axios.get('https://jsonplaceholder.typicode.com/todos');
 
         var slides = [
-            {name: "slide 1", color: "blue"},
-            {name: "slide 2", color: "blue"},
-            {name: "slide 3", color: "blue"},
-            {name: "slide 4", color: "blue"}
+            {name: "slide 1", color: "blue", type: "blank"},
+            {name: "slide 2", color: "blue", type: "blank"},
+            {name: "slide 3", color: "blue", type: "blank"},
+            {name: "slide 4", color: "blue", type: "blank"}
         ]
 
         commit('setSlides', slides);
@@ -34,6 +34,10 @@ const actions = {
 
     setActiveSlideToStore({ commit }, index){
         commit('setActiveSlide', index);
+    },
+
+    editSlide({ commit }, payload){
+        commit('editSlideDetails', payload);
     }
 
     // async addTodo({ commit }, title){
@@ -53,7 +57,9 @@ const mutations = {
 
     insertSlide: (state, index) => (state.slides.splice(index, 0, {name: "slide " + (index + 1), color: "blue"})),
 
-    setActiveSlide: (state, index) => (state.activeSlide = state.slides[index])
+    setActiveSlide: (state, index) => (state.activeSlide = state.slides[index], state.activeSlide.index = index),
+
+    editSlideDetails: (state, payload) => (state.slides[payload.index].type = payload.type)
 };
 
 export default {

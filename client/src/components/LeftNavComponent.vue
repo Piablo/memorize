@@ -5,7 +5,7 @@
             <v-layout row wrap>
                 <v-flex xs11>
                     <div class="slide-content-backing-panel" @click="setActiveSlide(index)">
-                        <SlideDisplay :props="index"></SlideDisplay>
+                        <SlideDisplay :props="slide"></SlideDisplay>
                     </div>
                 </v-flex>
                 <v-flex xs1>
@@ -28,13 +28,14 @@
 import { mapGetters, mapActions } from 'vuex';
 
 //Services
-//import { bus }from '@/services/Bus';
+import { bus }from '@/services/Bus';
 
 //Components
 import SlideDisplay from '@/components/SlideDisplay';
 
 export default {
     name: "Template",
+    
 
     props: [
         'props'
@@ -94,6 +95,8 @@ export default {
 
     created(){
         this.fetchSlides();
+        console.log("This is the place");
+        console.log(this.allSlides);
         
         
         var activeSlideIndex = this.allSlides.length - 1

@@ -1,5 +1,7 @@
 <template>
-    <div class="current-slide-backing-panel">{{title}}
+    <div class="current-slide-backing-panel">
+        {{props.name}}
+        {{props.type}}
     </div>
 </template>
 
@@ -25,20 +27,19 @@ export default {
 
     data(){
         return {
-            slideIndex: this.props,
-            title: null
+            dave: "p[aul"
         }
     },
 
     methods: {
-        //...mapActions(['fetchSlideAt'])
+        //...mapActions(['editSlide'])
         
     },
 
-    computed: mapGetters(['allSlides']),
+    //computed: mapGetters(['allSlides']),
 
     created(){
-        this.title = this.allSlides[this.slideIndex].name
+        
     }
     
 }
