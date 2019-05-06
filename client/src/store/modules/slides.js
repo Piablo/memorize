@@ -55,7 +55,7 @@ const mutations = {
     //newTodo: (state, todo) => state.todos.unshift(todo),
     slideToDeleteIndex: (state, index) => (state.slides.splice(index, 1)),
 
-    insertSlide: (state, index) => (state.slides.splice(index, 0, {name: "slide " + (index + 1), color: "blue"})),
+    insertSlide: (state, index) => (state.slides.splice(index, 0, {name: "slide " + (index + 1), color: "blue", type: "blank"})),
 
     setActiveSlide: (state, index) => (state.activeSlide = state.slides[index], state.activeSlide.index = index),
 

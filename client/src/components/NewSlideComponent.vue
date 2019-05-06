@@ -1,18 +1,19 @@
 <template>
     <div class="new-slide-component-backing-panel">
         <div class="new-slide-component-header">
-            <ButtonComponent :props="addPowershellTemplateButtonComponentProps"></ButtonComponent>
+            <v-layout row wrap>
+                <ButtonComponent :props="addPowershellTemplateButtonComponentProps"></ButtonComponent>
+                <ButtonComponent :props="testingProps"></ButtonComponent>
+            </v-layout>
         </div>
         <div class="new-slide-component-body-backing-panel">
             <div class="new-slide-component-content-backing-panel">
                 <v-layout row wrap>
                     <v-flex xs9>
-                        <div>{{getActiveSlide.name}}</div>
-                        <div>{{getActiveSlide.type}}</div>
-                        <!--<SlideDisplay></SlideDisplay>-->
+                        <SlideDisplay :props="getActiveSlide"></SlideDisplay>
                     </v-flex>
                     <v-flex xs3>
-                        <div class="new-powershell-template" v-if="showNewPowerShellTemplate">powershelltemplate</div>
+                        <SlideEditor :props="getActiveSlide"></SlideEditor>
                     </v-flex>
                 </v-layout>
             </div>
@@ -31,6 +32,7 @@ import { bus }from '@/services/Bus';
 //Components
 import ButtonComponent from '@/components/ButtonComponent';
 import SlideDisplay from '@/components/SlideDisplay';
+import SlideEditor from '@/components/SlideEditor';
 
 export default {
     name: "NewSlideComponent",
@@ -42,6 +44,7 @@ export default {
     components: {
         ButtonComponent,
         SlideDisplay,
+        SlideEditor
     },
 
     data(){
@@ -54,6 +57,11 @@ export default {
                 name: "addPowershellTemplateButtonComponent",
                 label: "PowerShell"
             },
+
+            testingProps:{
+                name: "testing",
+                label: "testing"
+            }
         }
     },
 
@@ -65,15 +73,26 @@ export default {
         showTemplate(selectedTemplate){
             this.showNewPowerShellTemplate = false;
 
+            var payload = {
+                index: null,
+                type: null,
+                data: null
+            }
+
             if(selectedTemplate === "PowerShell"){
                 this.showNewPowerShellTemplate = true;
-                var payload = {
-                    index: this.getActiveSlide.index,
-                    type: "PowerShell",
-                    data: "dave"
-                }
-                this.editSlide(payload);
+                payload.index = this.getActiveSlide.index,
+                payload. type = "PowerShell",
+                payload.data = "dave"
+                
+                
+            }else if(selectedTemplate === "testing"){
+                payload.index = this.getActiveSlide.index,
+                payload. type = "testing",
+                payload.data = "dave"
             }
+
+            this.editSlide(payload);
 
         }
     },
@@ -83,6 +102,10 @@ export default {
     created(){
         bus.$on("addPowershellTemplateButtonComponent" + "onClick", (state) => {
             this.showTemplate("PowerShell");
+        }),
+
+        bus.$on("testing" + "onClick", (state) => {
+            this.showTemplate("testing");
         })
     }
 }
